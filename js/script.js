@@ -63,3 +63,15 @@ function setCalendar() {
 }
 window.addEventListener("DOMContentLoaded", setCalendar);
 window.addEventListener("resize", setCalendar);
+
+fetch("/parts/header.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("header").innerHTML = data;
+  });
+
+fetch("/parts/footer.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("footer").innerHTML = data;
+  });
