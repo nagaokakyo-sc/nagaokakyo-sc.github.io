@@ -1,11 +1,11 @@
 function loadParts() {
-  fetch("parts/header.html")
+  fetch("/parts/header.html")
     .then(res => res.text())
     .then(data => {
       const header = document.getElementById("header");
       if (header) header.innerHTML = data;
     });
-  fetch("parts/footer.html")
+  fetch("/parts/footer.html")
     .then(res => res.text())
     .then(data => {
       const footer = document.getElementById("footer");
