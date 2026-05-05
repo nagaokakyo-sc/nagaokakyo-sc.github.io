@@ -80,55 +80,52 @@ function setCalendar() {
 }
 window.addEventListener("DOMContentLoaded", setCalendar);
 window.addEventListener("resize", setCalendar);
+async function fetchCalendarEvents() {
+  const res = await fetch(
+    "https://corsproxy.io/?https://calendar.google.com/calendar/ical/nagaokakyo.sc.senior%40gmail.com/public/basic.ics"
+  );
+  const text = await res.text();
+  const events = [];
+  const lines = text.split("\n");
+  let event = {};
+  let currentKey = "";
+  lines.forEach(line => {
+    if (line.startsWith(" ")) {
+      if (currentKey === "title" && event.title) {
+        event.title += line.trim();
+      }
+      return;
+    }
+    if (line.startsWith("BEGIN:VEVENT")) {
+      event = {};
+      currentKey = "";
+    }
+    if (line.startsWith("DTSTART")) {
+      event.start = line.split(":")[1];
+      currentKey = "start";
+    }
+    if (line.startsWith("SUMMARY")) {
+      event.title = line.substring(line.indexOf(":") + 1);
+      currentKey = "title";
+    }
+    if (line.startsWith("END:VEVENT")) {
+      events.push(event);
+    }
+  });
+  events.sort((a, b) => (a.start || "").localeCompare(b.start || ""));
+  return events;
+}
 
 async function loadTopSchedule() {
-  console.log("top schedule start");
   const container = document.getElementById("top-schedule");
   if (!container) return;
   try {
-    const res = await fetch(
-      "https://corsproxy.io/?https://calendar.google.com/calendar/ical/nagaokakyo.sc.senior%40gmail.com/public/basic.ics"
-    );
-    const text = await res.text();
-    console.log(text.slice(0, 200));
-    const events = [];
-    const lines = text.split("\n");
-    let event = {};
-    let currentKey = "";
-    lines.forEach(line => {
-      // 折り返し行（SUMMARYの続き）
-      if (line.startsWith(" ")) {
-        if (currentKey === "title" && event.title) {
-          event.title += line.trim();
-        }
-        return;
-      }
-      if (line.startsWith("BEGIN:VEVENT")) {
-        event = {};
-        currentKey = "";
-      }
-      if (line.startsWith("DTSTART")) {
-        event.start = line.split(":")[1];
-        currentKey = "start";
-      }
-      if (line.startsWith("SUMMARY")) {
-        event.title = line.substring(line.indexOf(":") + 1);
-        currentKey = "title";
-      }
-      if (line.startsWith("END:VEVENT")) {
-        events.push(event);
-      }
-    });
-    // 日付順にソート
-    events.sort((a, b) => (a.start || "").localeCompare(b.start || ""));
+    const events = await fetchCalendarEvents();
     const now = new Date();
-    // 未来の予定3件
     const upcoming = events.filter(e => {
       if (!e.start) return false;
-      const raw = e.start;
-      const dateStr = raw.slice(0, 8);
       const d = new Date(
-        `${dateStr.slice(0, 4)}-${dateStr.slice(4, 6)}-${dateStr.slice(6, 8)}`
+        `${e.start.slice(0,4)}-${e.start.slice(4,6)}-${e.start.slice(6,8)}`
       );
       return d >= now;
     }).slice(0, 3);
@@ -136,11 +133,9 @@ async function loadTopSchedule() {
       container.innerHTML = "<li>予定はありません</li>";
       return;
     }
-    // 表示
     container.innerHTML = upcoming.map(e => {
-      const raw = e.start;
-      const dateStr = raw.slice(0, 8);
-      const date = `${dateStr.slice(0, 4)}/${dateStr.slice(4, 6)}/${dateStr.slice(6, 8)}`;
+      const d = e.start;
+      const date = `${d.slice(0,4)}/${d.slice(4,6)}/${d.slice(6,8)}`;
       return `<li><span class="date">${date}</span> ${e.title || ""}</li>`;
     }).join("");
   } catch (e) {
@@ -148,4 +143,36 @@ async function loadTopSchedule() {
     container.innerHTML = "<li>読み込みに失敗しました</li>";
   }
 }
-window.addEventListener("DOMContentLoaded", loadTopSchedule);
+
+async function loadScheduleList() {
+  const container = document.getElementById("schedule-list-items");
+  if (!container) return;
+  try {
+    const events = await fetchCalendarEvents();
+    const now = new Date();
+    const upcoming = events.filter(e => {
+      if (!e.start) return false;
+      const d = new Date(
+        `${e.start.slice(0,4)}-${e.start.slice(4,6)}-${e.start.slice(6,8)}`
+      );
+      return d >= now;
+    }).slice(0, 10);
+    if (upcoming.length === 0) {
+      container.innerHTML = "<li>予定はありません</li>";
+      return;
+    }
+    container.innerHTML = upcoming.map(e => {
+      const d = e.start;
+      const date = `${d.slice(4,6)}/${d.slice(6,8)}`;
+      return `<li><span class="date">${date}</span> ${e.title || ""}</li>`;
+    }).join("");
+  } catch (e) {
+    console.error(e);
+    container.innerHTML = "<li>読み込みに失敗しました</li>";
+  }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  loadTopSchedule();
+  loadScheduleList();
+});

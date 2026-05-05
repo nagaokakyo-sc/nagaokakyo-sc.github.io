@@ -1,27 +1,45 @@
+/* ===== レイアウト ===== */
+main,
 footer {
   padding-left: 24px;
   padding-right: 24px;
   box-sizing: border-box;
 }
 
-main {
-  padding-left: 24px;
-  padding-right: 24px;
-  box-sizing: border-box;
+main section {
+  margin-bottom: 32px;
 }
 
-main h2 {
-    margin-bottom: 16px;
-    display: inline-block;
+main section h2 {
+  margin-bottom: 8px;
 }
 
+main section h3 {
+  margin-bottom: 8px;
+}
+
+main section p {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+main section > div {
+  margin-bottom: 24px;
+}
+
+main section > div:last-child {
+  margin-bottom: 0;
+}
+
+/* ===== ベース ===== */
 body {
-  font-family: 'Meiryo', 'Yu Gothic', 'Hiragino Kaku Gothic ProN', 'sans-serif';
+  font-family: 'Meiryo', 'Yu Gothic', 'Hiragino Kaku Gothic ProN', sans-serif;
   margin: 0;
   background: #f9f9f9;
   color: #222;
 }
 
+/* ===== キャッチコピー ===== */
 .catchphrase-bar {
   background: #218c3a;
   padding: 6px 0;
@@ -38,9 +56,9 @@ body {
   text-shadow: 0 1px 4px rgba(0,0,0,0.15);
 }
 
+/* ===== ヘッダー ===== */
 .main-header {
   background: #fff;
-  padding: 0;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
@@ -48,11 +66,6 @@ body {
   display: flex;
   align-items: center;
   padding: 12px 32px;
-  background: #fff;
-}
-
-.logo {
-  height: 10em;
 }
 
 .logo-link {
@@ -63,44 +76,20 @@ body {
   color: inherit;
 }
 
+.logo {
+  height: 10em;
+}
+
 .site-title {
-  color: #222;
   font-size: 2.2em;
-  font-family: 'Meiryo', 'Yu Gothic', 'Hiragino Kaku Gothic ProN', 'sans-serif';
   font-weight: bold;
   letter-spacing: 0.05em;
 }
 
-/* スマホ用 */
-@media (max-width: 768px) {
-  .catchphrase {
-    font-size: 0.7em;
-  }
-  .site-title {
-    font-size: 1.2em;
-  }
-  .logo {
-    height: 5em;
-  }
-}
-
-.top-image {
-  width: 100%;
-  position: relative;
-  background: #fff;
-  padding-bottom: 8px;
-}
-
-.top-image img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
+/* ===== ナビ（PC） ===== */
 .main-nav-bar {
   background: #fff;
   border-bottom: 1px solid #e0e0e0;
-  display: block;
 }
 
 .main-nav-bar ul {
@@ -108,7 +97,7 @@ body {
   gap: 16px;
   list-style: none;
   margin: 0;
-  padding: 0 32px 0 32px;
+  padding: 0 32px;
   height: 48px;
   align-items: center;
 }
@@ -117,16 +106,16 @@ body {
   color: #222;
   text-decoration: none;
   font-weight: bold;
-  font-size: 1em;
   padding: 8px 12px;
   border-radius: 4px;
   transition: background 0.2s;
 }
 
-.main-nav-bar a:hover, .main-nav-bar a:focus {
-    background: #e8f5e9;
+.main-nav-bar a:hover {
+  background: #e8f5e9;
 }
 
+/* ===== ナビ（スマホ） ===== */
 .section-links {
   background: #fff;
   border-bottom: 1px solid #e0e0e0;
@@ -147,7 +136,6 @@ body {
   color: #222;
   text-decoration: none;
   font-weight: bold;
-  font-size: 1em;
   padding: 14px 16px;
   border-radius: 8px;
   border: 1px solid #e0e0e0;
@@ -155,19 +143,35 @@ body {
   transition: background 0.2s, border-color 0.2s;
 }
 
-.section-links a:hover,.section-links a:focus {
+.section-links a:hover {
   background: #e8f5e9;
   border-color: #c8e6c9;
 }
 
-/* スマホ用 */
-@media (max-width: 768px) {
-  .main-nav-bar {
-    display: none;
-  }
-  .section-links {
-    display: block;
-  }
+/* ===== 画像 ===== */
+.top-image {
+  background: #fff;
+  padding-bottom: 8px;
+}
+
+.top-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.uniform-img {
+  max-width: 150px;
+  width: 100%;
+}
+
+/* ===== ニュース ===== */
+.feed-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 12px;
 }
 
 .feed-thumb {
@@ -197,66 +201,7 @@ body {
 
 .feed-text {
   font-size: 0.85em;
-  color: #333; /* ←真っ黒より少し柔らかい */
-}
-
-.feed-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 12px;
-}
-
-.uniform-img {
-  max-width: 150px;
-  width: 100%;
-  height: auto;
-}
-
-form label {
-  display: inline-block;
-  width: 140px; /* ←ここで揃える */
-}
-
-form p {
-  margin-bottom: 10px;
-}
-
-form input,
-form textarea {
-  width: 250px;
-}
-
-.calendar-frame {
-  width: 100%;
-  max-width: 800px;
-  height: 600px;
-  border: 1px solid #777;
-  display: block;
-}
-
-@media (max-width: 768px) {
-  .calendar-frame {
-    height: 400px;
-  }
-}
-
-.map-frame {
-  width: 100%;
-  height: 300px;
-  border: 0;
-  display: block;
-}
-
-@media (min-width: 769px) {
-  .map-frame {
-    height: 450px;
-  }
-}
-
-#place > div {
-  margin-bottom: 24px;
+  color: #333;
 }
 
 .top-news-item {
@@ -272,4 +217,76 @@ form textarea {
   color: #888;
   margin-right: 8px;
   font-size: 0.9em;
+}
+
+/* ===== フォーム ===== */
+form label {
+  display: inline-block;
+  width: 140px;
+}
+
+form p {
+  margin-bottom: 10px;
+}
+
+form input,
+form textarea {
+  width: 250px;
+}
+
+/* ===== カレンダー ===== */
+.calendar-frame {
+  width: 100%;
+  max-width: 800px;
+  height: 600px;
+  border: 1px solid #777;
+}
+
+/* ===== 地図 ===== */
+.map-frame {
+  width: 100%;
+  height: 300px;
+  border: 0;
+}
+
+@media (min-width: 769px) {
+  .map-frame {
+    height: 450px;
+  }
+}
+
+/* ===== 共通ユーティリティ ===== */
+.pc-only {
+  display: block;
+}
+
+/* ===== スマホ対応 ===== */
+@media (max-width: 768px) {
+  .catchphrase {
+    font-size: 0.7em;
+  }
+
+  .site-title {
+    font-size: 1.2em;
+  }
+
+  .logo {
+    height: 5em;
+  }
+
+  .main-nav-bar {
+    display: none;
+  }
+
+  .section-links {
+    display: block;
+  }
+
+  .calendar-frame {
+    height: 400px;
+  }
+
+  .pc-only {
+    display: none;
+  }
 }

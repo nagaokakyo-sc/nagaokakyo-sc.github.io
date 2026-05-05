@@ -11,8 +11,14 @@
     <main>
         <section id="schedule">
             <h2>スケジュール</h2>
-            <div id="schedule-calendar">
+            <!-- 共通：リスト -->
+            <div id="schedule-list">
                 <h3>活動スケジュール</h3>
+                <ul id="schedule-list-items"></ul>
+            </div>
+            <!-- PC専用：カレンダー -->
+            <div id="schedule-calendar" class="pc-only">
+                <h3>チームカレンダー</h3>
                 <iframe id="calendar" class="calendar-frame"></iframe>
             </div>
         </section>
