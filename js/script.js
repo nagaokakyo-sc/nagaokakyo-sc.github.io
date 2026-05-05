@@ -126,6 +126,7 @@ async function loadTopSchedule() {
   try {
     const events = await fetchCalendarEvents();
     const now = new Date();
+    now.setHours(0, 0, 0, 0);
     const upcoming = events.filter(e => {
       if (!e.start) return false;
       const d = new Date(
@@ -154,6 +155,7 @@ async function loadScheduleList() {
   try {
     const events = await fetchCalendarEvents();
     const now = new Date();
+    now.setHours(0, 0, 0, 0);
     const upcoming = events.filter(e => {
       if (!e.start) return false;
       const d = new Date(
