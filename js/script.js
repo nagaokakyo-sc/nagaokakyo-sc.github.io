@@ -105,7 +105,11 @@ async function fetchCalendarEvents() {
       currentKey = "start";
     }
     if (line.startsWith("SUMMARY")) {
-      event.title = line.substring(line.indexOf(":") + 1);
+      event.title = line
+        .substring(line.indexOf(":") + 1)
+        .replace(/\\,/g, ",")
+        .replace(/\\;/g, ";")
+        .replace(/\\\\/g, "\\");
       currentKey = "title";
     }
     if (line.startsWith("END:VEVENT")) {
