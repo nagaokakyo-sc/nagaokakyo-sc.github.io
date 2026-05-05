@@ -290,3 +290,21 @@ form textarea {
     display: none;
   }
 }
+
+a.mail-btn {
+  display: inline-block;
+  background: #f8f9fa; /* 薄いグレー */
+  color: #333;
+  padding: 8px 14px;
+  margin-top: 10px;
+  border: 2px solid #333; /* 黒縁 */
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.95em;
+  transition: all 0.2s;
+}
+a.mail-btn:hover {
+  background: #333;
+  color: #fff;
+}
