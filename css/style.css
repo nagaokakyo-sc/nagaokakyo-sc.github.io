@@ -1,3 +1,11 @@
+/* ===== ベース ===== */
+body {
+  font-family: 'Meiryo', 'Yu Gothic', 'Hiragino Kaku Gothic ProN', sans-serif;
+  margin: 0;
+  background: #f9f9f9;
+  color: #222;
+}
+
 /* ===== レイアウト ===== */
 main,
 footer {
@@ -10,10 +18,7 @@ main section {
   margin-bottom: 32px;
 }
 
-main section h2 {
-  margin-bottom: 8px;
-}
-
+main section h2,
 main section h3 {
   margin-bottom: 8px;
 }
@@ -31,12 +36,24 @@ main section > div:last-child {
   margin-bottom: 0;
 }
 
-/* ===== ベース ===== */
-body {
-  font-family: 'Meiryo', 'Yu Gothic', 'Hiragino Kaku Gothic ProN', sans-serif;
-  margin: 0;
-  background: #f9f9f9;
-  color: #222;
+/* ===== 共通コンポーネント ===== */
+a.mail-btn {
+  display: inline-block;
+  background: #f8f9fa;
+  color: #333;
+  padding: 8px 14px;
+  margin-top: 10px;
+  border: 2px solid #333;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.95em;
+  transition: all 0.2s;
+}
+
+a.mail-btn:hover {
+  background: #333;
+  color: #fff;
 }
 
 /* ===== キャッチコピー ===== */
@@ -255,12 +272,12 @@ form textarea {
   }
 }
 
-/* ===== 共通ユーティリティ ===== */
+/* ===== ユーティリティ ===== */
 .pc-only {
   display: block;
 }
 
-/* ===== スマホ対応 ===== */
+/* ===== レスポンシブ ===== */
 @media (max-width: 768px) {
   .catchphrase {
     font-size: 0.7em;
@@ -289,22 +306,4 @@ form textarea {
   .pc-only {
     display: none;
   }
-}
-
-a.mail-btn {
-  display: inline-block;
-  background: #f8f9fa; /* 薄いグレー */
-  color: #333;
-  padding: 8px 14px;
-  margin-top: 10px;
-  border: 2px solid #333; /* 黒縁 */
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 0.95em;
-  transition: all 0.2s;
-}
-a.mail-btn:hover {
-  background: #333;
-  color: #fff;
 }
