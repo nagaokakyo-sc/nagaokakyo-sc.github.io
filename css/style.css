@@ -236,6 +236,23 @@ a.mail-btn:hover {
   font-size: 0.9em;
 }
 
+#top-schedule {
+  list-style: none;
+  padding-left: 0;
+}
+
+#top-schedule li {
+  margin-bottom: 8px;
+  font-size: 1em;
+  color: #333;
+}
+
+#top-schedule .date {
+  color: #888;
+  margin-right: 8px;
+  font-size: 0.9em;
+}
+
 /* ===== フォーム ===== */
 form label {
   display: inline-block;
