@@ -236,6 +236,8 @@ a.mail-btn:hover {
   font-size: 0.9em;
 }
 
+/* ===== スケジュール ===== */
+
 #top-schedule {
   list-style: none;
   padding-left: 0;
@@ -254,6 +256,13 @@ a.mail-btn:hover {
   font-size: 0.9em;
 }
 
+.calendar-frame {
+  width: 100%;
+  max-width: 800px;
+  height: 600px;
+  border: 1px solid #777;
+}
+
 /* ===== フォーム ===== */
 form label {
   display: inline-block;
@@ -267,14 +276,6 @@ form p {
 form input,
 form textarea {
   width: 250px;
-}
-
-/* ===== カレンダー ===== */
-.calendar-frame {
-  width: 100%;
-  max-width: 800px;
-  height: 600px;
-  border: 1px solid #777;
 }
 
 /* ===== 地図 ===== */
