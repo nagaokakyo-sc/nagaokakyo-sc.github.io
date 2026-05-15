@@ -101,7 +101,8 @@ async function fetchCalendarEvents() {
       currentKey = "";
     }
     if (line.startsWith("DTSTART")) {
-      event.start = line.split(":")[1];
+      const raw = line.split(":")[1].trim();
+      event.start = raw;
       currentKey = "start";
     }
     if (line.startsWith("SUMMARY")) {
@@ -116,8 +117,41 @@ async function fetchCalendarEvents() {
       events.push(event);
     }
   });
-  events.sort((a, b) => (a.start || "").localeCompare(b.start || ""));
+  events.sort((a, b) => a.start.localeCompare(b.start));
   return events;
+}
+
+function formatEventDate(raw) {
+  let dateObj;
+  if (raw.includes("Z")) {
+    dateObj = new Date(
+      `${raw.slice(0,4)}-${raw.slice(4,6)}-${raw.slice(6,8)}T${raw.slice(9,11)}:${raw.slice(11,13)}:00Z`
+    );
+  }
+  else if (raw.length >= 15) {
+    dateObj = new Date(
+      `${raw.slice(0,4)}-${raw.slice(4,6)}-${raw.slice(6,8)}T${raw.slice(9,11)}:${raw.slice(11,13)}`
+    );
+  }
+  else {
+    return {
+      date: `${raw.slice(0,4)}/${raw.slice(4,6)}/${raw.slice(6,8)}`,
+      shortDate: `${raw.slice(4,6)}/${raw.slice(6,8)}`,
+      time: "--:--"
+    };
+  }
+  return {
+    date: dateObj.toLocaleDateString("ja-JP"),
+    shortDate:
+      String(dateObj.getMonth() + 1).padStart(2, "0") +
+      "/" +
+      String(dateObj.getDate()).padStart(2, "0"),
+    time: dateObj.toLocaleTimeString("ja-JP", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    })
+  };
 }
 
 async function loadTopSchedule() {
@@ -126,22 +160,34 @@ async function loadTopSchedule() {
   try {
     const events = await fetchCalendarEvents();
     const now = new Date();
-    now.setHours(0, 0, 0, 0);
-    const upcoming = events.filter(e => {
-      if (!e.start) return false;
-      const d = new Date(
-        `${e.start.slice(0,4)}-${e.start.slice(4,6)}-${e.start.slice(6,8)}`
-      );
-      return d >= now;
-    }).slice(0, 3);
+    const upcoming = events
+      .filter(e => {
+        if (!e.start) return false;
+        const raw = e.start;
+        const date =
+          raw.length >= 15
+            ? new Date(
+                `${raw.slice(0,4)}-${raw.slice(4,6)}-${raw.slice(6,8)}T${raw.slice(9,11)}:${raw.slice(11,13)}`
+              )
+            : new Date(
+                `${raw.slice(0,4)}-${raw.slice(4,6)}-${raw.slice(6,8)}`
+              );
+        return date >= now;
+      })
+      .slice(0, 3);
     if (upcoming.length === 0) {
       container.innerHTML = "<li>予定はありません</li>";
       return;
     }
     container.innerHTML = upcoming.map(e => {
-      const d = e.start;
-      const date = `${d.slice(0,4)}/${d.slice(4,6)}/${d.slice(6,8)}`;
-      return `<li><span class="date">${date}</span> ${e.title || ""}</li>`;
+      const f = formatEventDate(e.start);
+      return `
+        <li>
+          <span class="date">${f.date}</span>
+          <span class="time">${f.time}</span>
+          ${e.title}
+        </li>
+      `;
     }).join("");
   } catch (e) {
     console.error(e);
@@ -155,22 +201,34 @@ async function loadScheduleList() {
   try {
     const events = await fetchCalendarEvents();
     const now = new Date();
-    now.setHours(0, 0, 0, 0);
-    const upcoming = events.filter(e => {
-      if (!e.start) return false;
-      const d = new Date(
-        `${e.start.slice(0,4)}-${e.start.slice(4,6)}-${e.start.slice(6,8)}`
-      );
-      return d >= now;
-    }).slice(0, 10);
+    const upcoming = events
+      .filter(e => {
+        if (!e.start) return false;
+        const raw = e.start;
+        const date =
+          raw.length >= 15
+            ? new Date(
+                `${raw.slice(0,4)}-${raw.slice(4,6)}-${raw.slice(6,8)}T${raw.slice(9,11)}:${raw.slice(11,13)}`
+              )
+            : new Date(
+                `${raw.slice(0,4)}-${raw.slice(4,6)}-${raw.slice(6,8)}`
+              );
+        return date >= now;
+      })
+      .slice(0, 10);
     if (upcoming.length === 0) {
       container.innerHTML = "<li>予定はありません</li>";
       return;
     }
     container.innerHTML = upcoming.map(e => {
-      const d = e.start;
-      const date = `${d.slice(4,6)}/${d.slice(6,8)}`;
-      return `<li><span class="date">${date}</span> ${e.title || ""}</li>`;
+      const f = formatEventDate(e.start);
+      return `
+        <li>
+          <span class="date">${f.shortDate}</span>
+          <span class="time">${f.time}</span>
+          ${e.title}
+        </li>
+      `;
     }).join("");
   } catch (e) {
     console.error(e);

@@ -247,7 +247,8 @@ a.mail-btn:hover {
   color: #333;
 }
 
-#top-schedule .date {
+#top-schedule .date,
+#top-schedule .time {
   color: #888;
   margin-right: 8px;
   font-size: 0.9em;
