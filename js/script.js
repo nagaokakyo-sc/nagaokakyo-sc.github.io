@@ -17,7 +17,6 @@ window.addEventListener("DOMContentLoaded", loadParts);
 window.addEventListener("DOMContentLoaded", () => {
   const newsList = document.getElementById("news-list");
   const topNews = document.getElementById("top-news");
-  // 両方なければ何もしない
   if (!newsList && !topNews) return;
   fetch("https://nagaokakyo-sc.hatenablog.com/rss")
     .then(res => res.text())
@@ -37,7 +36,6 @@ window.addEventListener("DOMContentLoaded", () => {
         const imgMatch = content.match(/<img.*?src="(.*?)"/);
         const img = imgMatch ? imgMatch[1] : "images/no-image.png";
         const text = content.replace(/<[^>]+>/g, "").slice(0, 80) + "...";
-        // ▼ お知らせページ（10件）
         if (newsList && i < 10) {
           newsHTML += `
           <div class="feed-item">
@@ -52,7 +50,6 @@ window.addEventListener("DOMContentLoaded", () => {
           </div>
           `;
         }
-        // ▼ トップページ（3件だけ＆軽量）
         if (topNews && i < 3) {
           topHTML += `
           <div class="top-news-item">
